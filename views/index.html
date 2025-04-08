@@ -54,15 +54,56 @@
             <div class="form-container">
                 <h2>Update Data</h2>
                 <form id = "addForm"> 
-                    <label for = "name">Name:</label>
-                    <input type="text" class="form-control" id="name" name = "name" required/>
-                    <label for ="age">Age:</label>
-                    <input type="number" id="age" name="age" required>
-                    <button id="update-btn" type="submit" onclick="updateRecord()" class="btn btn-success">Update</button>
+                    <label for = "id">ID:</label>
+                    <input type="number" id="id" name = "id" required/>
+                    <label for = "name2">Name:</label>
+                    <input type="text" class="form-control" id="name2" name = "name2" required/>
+                    <label for ="age2">Age:</label>
+                    <input type="number" id="age2" name="age2" required>
+                    <button id="update-btn" type="submit" onclick="updateRow()" class="btn btn-success">Update</button>
                 </form>
             </div>
         </div>
     </div>
     <script src="./ops.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function createUser() {
+            console.log('Creating user...');
+            // Get user input from the form
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+
+            // Prepare data for the POST request
+            const userData = {
+                id: 1,
+                name: name,
+                age: age
+            };
+
+            // Make a POST request to FastAPI endpoint
+            axios.post('http://localhost:8000/users/', userData)
+                .then(response => {
+                    // After successful creation, you can update your table with the new data
+                    console.log('Response from FastAPI:', response.data);
+
+                    // Append a new row to the table with the new user data
+                    const tableBody = document.getElementById('generatedTableData');
+                    const newRow = tableBody.insertRow();
+                    const idCell = newRow.insertCell(0);
+                    const nameCell = newRow.insertCell(1);
+                    const ageCell = newRow.insertCell(2);
+
+                    idCell.textContent = newUser.id;
+                    nameCell.textContent = newUser.name;
+                    ageCell.textContent = newUser.age;
+
+                    console.log('User created successfully:', newUser);
+                })
+                .catch(error => {
+                    console.error('Error creating user:', error);
+                });
+        }
+    </script>
 </body>
 </html>
